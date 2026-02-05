@@ -1,0 +1,236 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #ffffff;
+  --foreground: #333333;
+  --card: #ffffff;
+  --card-foreground: #333333;
+  --popover: #ffffff;
+  --popover-foreground: #333333;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --secondary: #f3f4f6;
+  --secondary-foreground: #4b5563;
+  --muted: #f9fafb;
+  --muted-foreground: #6b7280;
+  --accent: #e0f2fe;
+  --accent-foreground: #1e3a8a;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #3b82f6;
+  --chart-1: #3b82f6;
+  --chart-2: #2563eb;
+  --chart-3: #1d4ed8;
+  --chart-4: #1e40af;
+  --chart-5: #1e3a8a;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: #0f172a; /* Bluish dark background */
+  --foreground: #f0f4f8; /* Light text for contrast */
+  --card: #1e293b;       /* Slightly lighter bluish card */
+  --card-foreground: #f0f4f8;
+  --popover: #0f172a;
+  --popover-foreground: #f0f4f8;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --secondary: #334155; /* Darker bluish secondary */
+  --secondary-foreground: #f0f4f8;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8; /* Lighter muted text */
+  --accent: #334155;
+  --accent-foreground: #f0f4f8;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #334155;
+  --input: #334155;
+  --ring: #3b82f6;
+  --chart-1: #60a5fa;
+  --chart-2: #3b82f6;
+  --chart-3: #2563eb;
+  --chart-4: #1d4ed8;
+  --chart-5: #1e40af;
+  --radius: 0.5rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* --- THE FIX: Direct CSS Overrides for react-phone-input-2 in Dark Mode --- */
+.dark .react-tel-input .form-control {
+    background-color: var(--card) !important;
+    color: var(--foreground) !important;
+    border-color: var(--border) !important;
+}
+.dark .react-tel-input .flag-dropdown {
+    background-color: var(--card) !important;
+    border-color: var(--border) !important;
+}
+.dark .react-tel-input .flag-dropdown.open,
+.dark .react-tel-input .selected-flag:hover {
+    background-color: var(--secondary) !important;
+}
+.dark .react-tel-input .country-list {
+    background-color: var(--card) !important;
+    color: var(--foreground) !important;
+    border-color: var(--border) !important;
+}
+.dark .react-tel-input .country-list .country:hover,
+.dark .react-tel-input .country-list .country.highlight {
+    background-color: var(--secondary) !important;
+}
+.dark .react-tel-input .country-list .search-box {
+    background-color: var(--muted) !important;
+    color: var(--foreground) !important;
+}
+
+/* Utility for hiding scrollbars if needed elsewhere */
+.hide-scrollbar {
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}
+
+/* FullCalendar Dark Mode Theme Overrides */
+.dark .fc-col-header-cell-cushion {
+  color: #111827 !important;
+}
+.dark .fc .fc-toolbar-title {
+  color: var(--foreground);
+}
+.dark .fc .fc-daygrid-day-number {
+  color: var(--foreground);
+}
+.dark .fc .fc-button-primary {
+  background-color: var(--secondary);
+  border-color: var(--border);
+  color: var(--secondary-foreground);
+}
+.dark .fc .fc-button-primary:hover {
+  background-color: var(--muted);
+}
+.dark .fc .fc-button-primary:not(:disabled).fc-button-active {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+.dark .fc .fc-day-today {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+}
+.dark .fc-theme-standard th,
+.dark .fc-theme-standard td {
+    border-color: var(--border);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px; /* Width of the vertical scrollbar */
+  height: 8px; /* Height of the horizontal scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent; /* Make the track completely transparent */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.3); /* A subtle, semi-transparent grey */
+  border-radius: 20px; /* Fully rounded corners */
+  border: 2px solid transparent; /* Creates a padding effect */
+  background-clip: content-box;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(156, 163, 175, 0.5); /* Make it slightly more visible on hover */
+}
+
+/* For Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.5) transparent; /* thumb color track color */
+}
+
+/* --- MOBILE COMPACT VIEW ENHANCEMENTS --- */
+/*
+  The following styles will apply on screens smaller than 768px to create a
+  more compact form layout. The best practice is to use Tailwind's responsive
+  prefixes (e.g., 'md:', 'lg:') directly in your component's JSX/TSX files.
+  These global overrides serve as a general solution since that file was not provided.
+*/
+@media (max-width: 767px) {
+  /* Reduce the main page padding */
+  .p-4, .p-6, .p-8 { /* Target common padding utilities */
+    padding: 1rem !important;
+  }
+
+  /* Reduce padding inside cards like "Contact Persons" */
+  .card, [class*="rounded-lg"] {
+    padding: 1rem;
+  }
+
+  /* Reduce vertical spacing between form fields */
+  /* This targets containers that likely wrap a label and an input */
+  form div[class*="mb-"],
+  form fieldset[class*="mb-"] {
+    margin-bottom: 0.75rem !important; /* 12px */
+  }
+
+  /* Reduce the space between a label and its corresponding input */
+  label {
+    margin-bottom: 0.25rem !important; /* 4px */
+    font-size: 0.875rem; /* Make label font slightly smaller */
+  }
+
+  /* To make fields more compact, you can use a grid layout.
+     For example, you could wrap 'Prefix' and 'First Name' in your JSX like this:
+     <div class="grid grid-cols-3 gap-x-4">
+       <div class="col-span-1">...Prefix Field...</div>
+       <div class="col-span-2">...First Name Field...</div>
+     </div>
+     This allows for more horizontal field placement, saving vertical space.
+  */
+}
