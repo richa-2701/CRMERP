@@ -168,7 +168,7 @@ export default function PipelinePage() {
                         <CardHeader className="pb-3">
                             <CardTitle className="text-sm font-medium flex items-center justify-between">
                                 <span>{stage.name}</span>
-                                <span className="text-xs bg-gray-100 px-2 py-1 rounded-full">
+                                <span className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded-full">
                                     {stage.count}
                                 </span>
                             </CardTitle>
@@ -185,7 +185,7 @@ export default function PipelinePage() {
                                 stage.leads.map((lead) => (
                                     <div
                                         key={lead.id}
-                                        className="p-3 bg-white border rounded-lg hover:shadow-md transition-shadow"
+                                        className="p-3 bg-card border rounded-lg hover:shadow-md transition-shadow"
                                     >
                                         <div className="flex items-start justify-between gap-2">
                                             <div className="flex-1 min-w-0">

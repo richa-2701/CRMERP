@@ -66,15 +66,23 @@ export default function UserLoginPage() {
                 setShowErrorDialog(true)
             }
         } catch (err: any) {
-            console.error(err)
             let errorMsg = "An unknown error occurred."
 
             if (err instanceof Error) {
                 errorMsg = err.message
             }
 
-            if (errorMsg.includes("API 401")) {
-                errorMsg = "Invalid User Credentials. Please check details."
+            // Only log to console if it's NOT a known auth error
+            if (!errorMsg.includes("API 401") &&
+                !errorMsg.includes("Login Failed") &&
+                !errorMsg.includes("You are not authorized")) {
+                console.error(err)
+            }
+
+            if (errorMsg.includes("You are not authorized for this module")) {
+                errorMsg = "You are not authorized for this module.";
+            } else if (errorMsg.includes("API 401")) {
+                errorMsg = "Invalid User Credentials. Please check details.";
             }
 
             // Extract message from JSON if present

@@ -107,8 +107,8 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
             isSidebarCollapsed ? "md:ml-16" : "md:ml-64"
           )}
         >
-          <div className="pt-1 pl-2 pb-20 md:pt-2 md:pb-6 md:px-6">
-            <div className="mx-auto max-w-7xl">{children}</div>
+          <div className="pt-1 pl-1 pr-1 pb-20 md:pt-2 md:pb-6 md:px-3 md:pr-3">
+            <div className="mx-auto max-w-full">{children}</div>
           </div>
         </main>
       </div>

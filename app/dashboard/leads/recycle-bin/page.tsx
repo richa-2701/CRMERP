@@ -157,8 +157,14 @@ export default function RecycleBinPage() {
       console.log("Raw deleted leads data:", deletedLeadsData);
 
       // Transform deleted leads from PascalCase backend response to component format
-      const transformedLeads: Lead[] = (Array.isArray(deletedLeadsData) ? deletedLeadsData : []).map((lead: any) => {
-        // Handle nested contacts - they come as JSON string from backend
+      const transformedLeads: Lead[] = (Array.isArray(deletedLeadsData) ? deletedLeadsData : []).map((lead: any, index: number) => {
+        // Debug first item to ensure keys are visible
+        if (index === 0) {
+          console.log("Mapping Loop - First Raw Lead:", lead);
+          console.log("Mapping Loop - Keys:", Object.keys(lead));
+        }
+
+        // Handle nested contacts
         let contacts: Contact[] = [];
         if (lead.contacts) {
           if (typeof lead.contacts === 'string') {
@@ -174,35 +180,43 @@ export default function RecycleBinPage() {
           }
         }
 
+        // Explicit ID Extraction
+        // Note: Backend seems to return 'ledger_id' (lowercase) based on logs
+        const finalId = lead.ledger_id || lead.LedgerID || lead.id || lead.lead_id || lead.ledger_i_d;
+
+        if (!finalId) {
+          console.warn(`Lead at index ${index} has missing ID. Raw object:`, lead);
+        }
+
         const transformedLead: Lead = {
-          id: lead.LedgerID?.toString() || lead.id?.toString(),
-          LedgerID: lead.LedgerID,
-          company_name: lead.LedgerName,
-          LedgerName: lead.LedgerName,
-          LedgerCode: lead.LedgerCode,
+          id: finalId?.toString(),
+          LedgerID: finalId,
+          company_name: lead.company_name || lead.LedgerName || lead.MailingName || lead.mailing_name,
+          LedgerName: lead.company_name || lead.LedgerName || lead.MailingName || lead.mailing_name,
+          LedgerCode: lead.LedgerCode || lead.ledger_code,
           contacts: contacts,
           Contacts: contacts,
-          assigned_to: lead.SalesPersonName || 'N/A',
-          SalesPersonName: lead.SalesPersonName,
-          status: lead.LeadStatus,
-          LeadStatus: lead.LeadStatus,
-          Status: lead.Status,
-          created_at: lead.CreatedDate,
-          CreatedDate: lead.CreatedDate,
-          updated_at: lead.ModifiedDate,
-          ModifiedDate: lead.ModifiedDate,
-          Email: lead.Email,
-          MobileNo: lead.MobileNo,
-          TelephoneNo: lead.TelephoneNo,
-          City: lead.City,
-          State: lead.State,
-          Country: lead.Country,
-          Address1: lead.Address1,
-          Address2: lead.Address2,
+          assigned_to: lead.assigned_to || lead.SalesPersonName || 'N/A',
+          SalesPersonName: lead.assigned_to || lead.SalesPersonName,
+          status: lead.status || lead.LeadStatus || lead.Status,
+          LeadStatus: lead.status || lead.LeadStatus || lead.Status,
+          Status: lead.status || lead.LeadStatus || lead.Status,
+          created_at: lead.created_at || lead.CreatedDate,
+          CreatedDate: lead.created_at || lead.CreatedDate,
+          updated_at: lead.updated_at || lead.ModifiedDate,
+          ModifiedDate: lead.updated_at || lead.ModifiedDate,
+          Email: lead.email || lead.Email,
+          MobileNo: lead.mobile || lead.phone || lead.MobileNo || lead.phone_2,
+          TelephoneNo: lead.telephone || lead.TelephoneNo,
+          City: lead.city || lead.City,
+          State: lead.state || lead.State,
+          Country: lead.country || lead.Country,
+          Address1: lead.address || lead.Address1,
+          Address2: lead.address_2 || lead.Address2,
           isLead: lead.isLead,
           isClient: lead.isClient,
-          ContactPersonName: lead.ContactPersonName,
-          ContactPersonNumber: lead.ContactPersonNumber,
+          ContactPersonName: lead.contact_person_name || lead.ContactPersonName,
+          ContactPersonNumber: lead.contact_person_number || lead.ContactPersonNumber,
         };
         return transformedLead;
       });
@@ -262,11 +276,15 @@ export default function RecycleBinPage() {
 
   const handleRestoreLead = async (lead: Lead) => {
     try {
-      const ledgerId = lead.LedgerID || parseInt(lead.id || "0", 10);
-      if (!ledgerId) {
+      // Prioritize LedgerID if available, otherwise parse the string id
+      const leadAny = lead as any;
+      const ledgerId = lead.LedgerID || (lead.id ? parseInt(lead.id, 10) : 0) || leadAny.ledger_id || leadAny.lead_id;
+
+      if (!ledgerId || isNaN(ledgerId)) {
+        console.error("Invalid lead ID for restore:", lead);
         toast({
           title: "Error",
-          description: "Invalid lead ID",
+          description: "Invalid lead ID. Cannot restore.",
           variant: "destructive",
         });
         return;
@@ -390,7 +408,7 @@ export default function RecycleBinPage() {
                     const hasConsignees = (lead.Contacts?.length || 0) > 0;
 
                     return (
-                      <React.Fragment key={lead.id}>
+                      <React.Fragment key={lead.id || `lead-${index}`}>
                         {/* Main Lead Row */}
                         <TableRow>
                           <TableCell className="font-medium">{index + 1}</TableCell>
@@ -427,7 +445,7 @@ export default function RecycleBinPage() {
                           </TableCell>
                         </TableRow>
 
-                        {/* Consignee Rows */}
+                        {/* Consignee Rows - Align with 13 Header Columns */}
                         {isExpanded && hasConsignees && lead.Contacts?.map((consignee, consigneeIndex) => (
                           <TableRow key={`${lead.id}-consignee-${consigneeIndex}`} className="bg-muted/30">
                             <TableCell className="bg-muted/30"></TableCell>
@@ -437,11 +455,12 @@ export default function RecycleBinPage() {
                             <TableCell className="bg-muted/30">{consignee.MobileNo || "N/A"}</TableCell>
                             <TableCell className="bg-muted/30">{consignee.City || "N/A"}</TableCell>
                             <TableCell className="bg-muted/30">{consignee.State || "N/A"}</TableCell>
-
                             <TableCell className="bg-muted/30">-</TableCell>
                             <TableCell className="bg-muted/30"><Badge variant="outline">{consignee.Designation || "Contact"}</Badge></TableCell>
-                            <TableCell className="bg-muted/30">{formatDateTime(lead.updated_at || "")}</TableCell>
-                            <TableCell className="bg-muted/30"></TableCell>
+                            <TableCell className="bg-muted/30"></TableCell> {/* Assigned To - Empty for Contact */}
+                            <TableCell className="bg-muted/30"></TableCell> {/* Status - Empty for Contact */}
+                            <TableCell className="bg-muted/30"></TableCell> {/* Date - Empty for Contact */}
+                            <TableCell className="bg-muted/30"></TableCell> {/* Actions - Empty for Contact */}
                           </TableRow>
                         ))}
                       </React.Fragment>

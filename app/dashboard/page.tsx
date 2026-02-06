@@ -202,10 +202,11 @@ export default function DashboardPage() {
           console.warn("Failed to fetch stale leads:", err);
           return [];
         }),
-        api.getAllProposals().catch(err => {
-          console.warn("Failed to fetch proposals:", err);
-          return [];
-        })
+        // api.getAllProposals().catch(err => {
+        //   console.warn("Failed to fetch proposals:", err);
+        //   return [];
+        // })
+        Promise.resolve([] as ApiProposalSent[]) // Return empty array for proposals as feature is disabled
       ]);
 
       if (staleLeadsData && staleLeadsData.length > 0) {

@@ -800,6 +800,9 @@ async function fetcher<T>(
             tasks_completed: []
           }
         } as unknown as T;
+      } else if (response.status === 401) {
+        // Suppress console error for 401 Unauthorized (Login Failed)
+        // console.warn("[API Warning] Unauthorized:", text);
       } else if (text.includes("Invalid object name")) {
         console.warn("[API Warning] Missing table/object:", text);
       } else {
@@ -846,8 +849,9 @@ async function fetcher<T>(
 
     return response.text() as unknown as T;
   } catch (error: any) {
-    if (error && error.message && (error.message.includes("409") || error.message.includes("Invalid object name"))) {
-      console.warn("[Network Fetch Warning]", url, error.message);
+    if (error && error.message && (error.message.includes("409") || error.message.includes("Invalid object name") || error.message.includes("API 401"))) {
+      // Suppress console error for expected scenarios
+      // console.warn("[Network Fetch Warning]", url, error.message);
     } else {
       console.error("[Network Fetch Failed]", url, error);
     }

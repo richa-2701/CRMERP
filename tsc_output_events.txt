@@ -1,0 +1,121 @@
+﻿app/dashboard/bulk-upload/page.tsx(38,15): error TS2740: Type '{}' is missing the following properties from type 'any[]': length, pop, push, concat, and 35 more.
+app/dashboard/bulk-upload/page.tsx(48,13): error TS2353: Object literal may only specify known properties, and 'duration' does not exist in type 'Toast'.
+app/dashboard/drip-sequence/assign/page.tsx(33,77): error TS2345: Argument of type 'number | undefined' is not assignable to parameter of type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+app/dashboard/events/page.tsx(388,84): error TS2345: Argument of type 'ApiMeeting' is not assignable to parameter of type '(ApiMeeting | ApiDemo) & { phase?: string | undefined; attendees?: string | undefined; }'.
+  Type 'ApiMeeting' is not assignable to type 'ApiMeeting & { phase?: string | undefined; attendees?: string | undefined; }'.
+    Type 'ApiMeeting' is not assignable to type '{ phase?: string | undefined; attendees?: string | undefined; }'.
+      Types of property 'attendees' are incompatible.
+        Type 'string[] | undefined' is not assignable to type 'string | undefined'.
+          Type 'string[]' is not assignable to type 'string'.
+app/dashboard/events/page.tsx(389,81): error TS2345: Argument of type 'ApiDemo' is not assignable to parameter of type '(ApiMeeting | ApiDemo) & { phase?: string | undefined; attendees?: string | undefined; }'.
+  Type 'ApiDemo' is not assignable to type 'ApiDemo & { phase?: string | undefined; attendees?: string | undefined; }'.
+    Type 'ApiDemo' is not assignable to type '{ phase?: string | undefined; attendees?: string | undefined; }'.
+      Types of property 'attendees' are incompatible.
+        Type 'string[] | undefined' is not assignable to type 'string | undefined'.
+          Type 'string[]' is not assignable to type 'string'.
+app/dashboard/leads/[leadId]/page.tsx(245,17): error TS7006: Parameter 'prevLead' implicitly has an 'any' type.
+app/dashboard/leads/[leadId]/page.tsx(247,54): error TS7006: Parameter 'att' implicitly has an 'any' type.
+app/dashboard/leads/[leadId]/page.tsx(474,71): error TS7006: Parameter 'att' implicitly has an 'any' type.
+app/dashboard/leads/page.tsx(193,52): error TS2304: Cannot find name 'SalesPerson'.
+app/dashboard/leads/recycle-bin/page.tsx(184,11): error TS2353: Object literal may only specify known properties, and 'Email' does not exist in type 'Lead'.
+app/dashboard/leads/recycle-bin/page.tsx(201,40): error TS2339: Property 'UserId' does not exist on type 'ApiUser'.
+app/dashboard/leads/recycle-bin/page.tsx(201,55): error TS2339: Property 'LedgerID' does not exist on type 'ApiUser'.
+app/dashboard/leads/recycle-bin/page.tsx(202,48): error TS2551: Property 'UserName' does not exist on type 'ApiUser'. Did you mean 'username'?
+app/dashboard/leads/recycle-bin/page.tsx(202,65): error TS2339: Property 'LedgerName' does not exist on type 'ApiUser'.
+app/dashboard/leads/recycle-bin/page.tsx(206,37): error TS2551: Property 'Email' does not exist on type 'ApiUser'. Did you mean 'email'?
+app/dashboard/leads/recycle-bin/page.tsx(207,35): error TS2551: Property 'Role' does not exist on type 'ApiUser'. Did you mean 'role'?
+app/dashboard/leads/recycle-bin/page.tsx(238,60): error TS2339: Property 'contact_name' does not exist on type 'Contact'.
+app/dashboard/leads/recycle-bin/page.tsx(238,78): error TS2339: Property 'contact_name' does not exist on type 'Contact'.
+app/dashboard/leads/recycle-bin/page.tsx(339,403): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+app/dashboard/leads/recycle-bin/page.tsx(399,46): error TS2339: Property 'Email' does not exist on type 'Lead'.
+app/dashboard/leads/recycle-bin/page.tsx(400,46): error TS2339: Property 'MobileNo' does not exist on type 'Lead'.
+app/dashboard/leads/recycle-bin/page.tsx(401,46): error TS2339: Property 'City' does not exist on type 'Lead'.
+app/dashboard/leads/recycle-bin/page.tsx(402,46): error TS2339: Property 'State' does not exist on type 'Lead'.
+app/dashboard/leads/recycle-bin/page.tsx(403,53): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+app/dashboard/page.tsx(210,370): error TS2339: Property 'contact_name' does not exist on type 'ApiContact | ProposalSentContact'.
+  Property 'contact_name' does not exist on type 'ApiContact'.
+app/dashboard/page.tsx(215,340): error TS2339: Property 'contact_name' does not exist on type 'ApiContact | ProposalSentContact'.
+  Property 'contact_name' does not exist on type 'ApiContact'.
+app/dashboard/page.tsx(220,199): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+app/dashboard/page.tsx(220,264): error TS2339: Property 'contact_name' does not exist on type 'ApiContact'.
+app/dashboard/page.tsx(724,63): error TS2741: Property 'company_name' is missing in type 'User' but required in type 'ApiUser'.
+app/dashboard/post-demo/page.tsx(122,28): error TS18048: 'l.id' is possibly 'undefined'.
+app/dashboard/post-demo/page.tsx(150,17): error TS2322: Type '{ value: string; label: string | undefined; }[]' is not assignable to type '{ value: string; label: string; }[]'.
+  Type '{ value: string; label: string | undefined; }' is not assignable to type '{ value: string; label: string; }'.
+    Types of property 'label' are incompatible.
+      Type 'string | undefined' is not assignable to type 'string'.
+        Type 'undefined' is not assignable to type 'string'.
+app/dashboard/post-event/page.tsx(58,19): error TS2345: Argument of type '({ type: "meeting"; id: number; lead_id: number; proposal_id?: number | undefined; client_id?: number | undefined; assigned_to: string; event_type: string; meeting_type?: string | undefined; ... 7 more ...; duration_minutes?: number | undefined; } | { ...; })[]' is not assignable to parameter of type 'SetStateAction<Event[]>'.
+  Type '({ type: "meeting"; id: number; lead_id: number; proposal_id?: number | undefined; client_id?: number | undefined; assigned_to: string; event_type: string; meeting_type?: string | undefined; ... 7 more ...; duration_minutes?: number | undefined; } | { ...; })[]' is not assignable to type 'Event[]'.
+    Type '{ type: "meeting"; id: number; lead_id: number; proposal_id?: number | undefined; client_id?: number | undefined; assigned_to: string; event_type: string; meeting_type?: string | undefined; ... 7 more ...; duration_minutes?: number | undefined; } | { ...; }' is not assignable to type 'Event'.
+      Type '{ type: "meeting"; id: number; lead_id: number; proposal_id?: number | undefined; client_id?: number | undefined; assigned_to: string; event_type: string; meeting_type?: string | undefined; ... 7 more ...; duration_minutes?: number | undefined; }' is missing the following properties from type 'Event': scheduled_by, start_time, updated_at
+app/dashboard/post-event/page.tsx(130,102): error TS18048: 'lead.id' is possibly 'undefined'.
+app/dashboard/post-event/page.tsx(132,12): error TS18048: 'lead.id' is possibly 'undefined'.
+app/dashboard/post-event/page.tsx(133,93): error TS2339: Property 'contact_name' does not exist on type 'ApiContact'.
+app/dashboard/post-meeting/page.tsx(134,28): error TS18048: 'l.id' is possibly 'undefined'.
+app/dashboard/post-meeting/page.tsx(169,17): error TS2322: Type '{ value: string; label: string | undefined; }[]' is not assignable to type '{ value: string; label: string; }[]'.
+  Type '{ value: string; label: string | undefined; }' is not assignable to type '{ value: string; label: string; }'.
+    Types of property 'label' are incompatible.
+      Type 'string | undefined' is not assignable to type 'string'.
+        Type 'undefined' is not assignable to type 'string'.
+app/dashboard/schedule/page.tsx(163,25): error TS2345: Argument of type '({ id: string; lead_id: string | null; phase: string; start_time: string; end_time: string; type: "meeting"; proposal_id?: number | undefined; client_id?: number | undefined; assigned_to: string; ... 8 more ...; duration_minutes?: number | undefined; } | { ...; })[]' is not assignable to parameter of type 'SetStateAction<Meeting[]>'.
+  Type '({ id: string; lead_id: string | null; phase: string; start_time: string; end_time: string; type: "meeting"; proposal_id?: number | undefined; client_id?: number | undefined; assigned_to: string; ... 8 more ...; duration_minutes?: number | undefined; } | { ...; })[]' is not assignable to type 'Meeting[]'.
+    Type '{ id: string; lead_id: string | null; phase: string; start_time: string; end_time: string; type: "meeting"; proposal_id?: number | undefined; client_id?: number | undefined; assigned_to: string; ... 8 more ...; duration_minutes?: number | undefined; } | { ...; }' is not assignable to type 'Meeting'.
+      Type '{ id: string; lead_id: string | null; phase: string; start_time: string; end_time: string; type: "meeting"; proposal_id?: number; client_id?: number; assigned_to: string; event_type: string; ... 7 more ...; duration_minutes?: number; }' is not assignable to type 'Meeting'.
+        Types of property 'id' are incompatible.
+          Type 'string' is not assignable to type 'number'.
+components/activity/activity-modal.tsx(60,40): error TS2339: Property 'sendMessage' does not exist on type '{ getCompanyAuthName: () => string | null; companyAuthenticate: (companyName: string, companyPassword: string) => Promise<{ message: string; }>; userAuthenticate: (username: string, password: string, companyName: string) => Promise<...>; ... 73 more ...; exportSummaryReport: (startDate: string, endDate: string) => P...'.
+components/clients/edit-client-modal.tsx(160,24): error TS2339: Property 'remark' does not exist on type 'ApiClient'.
+components/clients/edit-client-modal.tsx(169,21): error TS2345: Argument of type '{ linkedIn: string; pan: string; prefix: string; first_name: string; last_name: string; id?: number | undefined; client_id?: number | undefined; contact_name?: string | null | undefined; phone?: string | ... 1 more ... | undefined; email?: string | ... 1 more ... | undefined; designation?: string | ... 1 more ... | ...' is not assignable to parameter of type 'SetStateAction<ClientContactForEdit[]>'.
+  Type '{ linkedIn: string; pan: string; prefix: string; first_name: string; last_name: string; id?: number | undefined; client_id?: number | undefined; contact_name?: string | null | undefined; phone?: string | ... 1 more ... | undefined; email?: string | ... 1 more ... | undefined; designation?: string | ... 1 more ... | ...' is not assignable to type 'ClientContactForEdit[]'.
+    Type '{ linkedIn: string; pan: string; prefix: string; first_name: string; last_name: string; id?: number; client_id?: number; contact_name?: string | null; phone?: string | null; email?: string | null; designation?: string | null; }' is not assignable to type 'ClientContactForEdit'.
+      Types of property 'phone' are incompatible.
+        Type 'string | null | undefined' is not assignable to type 'string'.
+          Type 'undefined' is not assignable to type 'string'.
+components/clients/edit-client-modal.tsx(223,14): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+components/leads/assign-drip-modal.tsx(41,51): error TS2345: Argument of type 'number | undefined' is not assignable to parameter of type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+components/leads/convert-lead-to-client-modal.tsx(142,24): error TS2339: Property 'linkedIn' does not exist on type 'ApiLead'.
+components/leads/convert-lead-to-client-modal.tsx(144,31): error TS2339: Property 'phone_2' does not exist on type 'ApiLead'.
+components/leads/convert-lead-to-client-modal.tsx(145,23): error TS2551: Property 'address' does not exist on type 'ApiLead'. Did you mean 'address1'?
+components/leads/convert-lead-to-client-modal.tsx(146,25): error TS2551: Property 'address_2' does not exist on type 'ApiLead'. Did you mean 'address2'?
+components/leads/convert-lead-to-client-modal.tsx(151,23): error TS2339: Property 'segment' does not exist on type 'ApiLead'.
+components/leads/convert-lead-to-client-modal.tsx(152,25): error TS2339: Property 'verticles' does not exist on type 'ApiLead'.
+components/leads/convert-lead-to-client-modal.tsx(153,32): error TS2339: Property 'team_size' does not exist on type 'ApiLead'.
+components/leads/convert-lead-to-client-modal.tsx(154,24): error TS2339: Property 'turnover' does not exist on type 'ApiLead'.
+components/leads/convert-lead-to-client-modal.tsx(155,30): error TS2339: Property 'current_system' does not exist on type 'ApiLead'.
+components/leads/convert-lead-to-client-modal.tsx(156,37): error TS2339: Property 'machine_specification' does not exist on type 'ApiLead'.
+components/leads/convert-lead-to-client-modal.tsx(157,26): error TS2339: Property 'challenges' does not exist on type 'ApiLead'.
+components/leads/convert-lead-to-client-modal.tsx(158,23): error TS2339: Property 'version' does not exist on type 'ApiLead'.
+components/leads/convert-lead-to-client-modal.tsx(159,29): error TS2339: Property 'database_type' does not exist on type 'ApiLead'.
+components/leads/convert-lead-to-client-modal.tsx(160,19): error TS2339: Property 'amc' does not exist on type 'ApiLead'.
+components/leads/convert-lead-to-client-modal.tsx(161,19): error TS2339: Property 'gst' does not exist on type 'ApiLead'.
+components/leads/convert-lead-to-client-modal.tsx(166,21): error TS2345: Argument of type '{ linkedIn: any; pan: any; prefix: string; first_name: string; last_name: string; ledger_name?: string | undefined; mailing_name?: string | undefined; ledger_description?: string | undefined; ... 18 more ...; remarks?: string | undefined; }[]' is not assignable to parameter of type 'SetStateAction<LeadContactForConversion[]>'.
+  Type '{ linkedIn: any; pan: any; prefix: string; first_name: string; last_name: string; ledger_name?: string | undefined; mailing_name?: string | undefined; ledger_description?: string | undefined; ... 18 more ...; remarks?: string | undefined; }[]' is not assignable to type 'LeadContactForConversion[]'.
+    Property 'phone' is missing in type '{ linkedIn: any; pan: any; prefix: string; first_name: string; last_name: string; ledger_name?: string; mailing_name?: string; ledger_description?: string; address1?: string; address2?: string; ... 16 more ...; remarks?: string; }' but required in type 'LeadContactForConversion'.
+components/leads/convert-lead-to-client-modal.tsx(168,30): error TS2339: Property 'contact_name' does not exist on type 'ApiContact'.
+components/leads/convert-lead-to-client-modal.tsx(169,23): error TS2339: Property 'linkedIn' does not exist on type 'ApiContact'.
+components/leads/convert-lead-to-client-modal.tsx(170,18): error TS2339: Property 'pan' does not exist on type 'ApiContact'.
+components/leads/convert-lead-to-client-modal.tsx(223,17): error TS18048: 'lead.id' is possibly 'undefined'.
+components/leads/lead-history-modal.tsx(59,34): error TS2339: Property 'getHistory' does not exist on type '{ getAllLeads: () => Promise<any[]>; getLeadById: (leadId: number) => Promise<any>; searchLeads: (searchTerm: string) => Promise<ApiLeadSearchResult[]>; ... 10 more ...; downloadLeadAttachment: (attachmentId: number) => Promise<...>; }'.
+components/messages/create-message-modal.tsx(41,21): error TS2345: Argument of type '(prev: Omit<ApiMessageMasterCreatePayload, "created_by">) => { message_type: string; message_content: string; message_name: string; }' is not assignable to parameter of type 'SetStateAction<Omit<ApiMessageMasterCreatePayload, "created_by">>'.
+  Type '(prev: Omit<ApiMessageMasterCreatePayload, "created_by">) => { message_type: string; message_content: string; message_name: string; }' is not assignable to type '(prevState: Omit<ApiMessageMasterCreatePayload, "created_by">) => Omit<ApiMessageMasterCreatePayload, "created_by">'.
+    Call signature return types '{ message_type: string; message_content: string; message_name: string; }' and 'Omit<ApiMessageMasterCreatePayload, "created_by">' are incompatible.
+      The types of 'message_type' are incompatible between these types.
+        Type 'string' is not assignable to type '"text" | "document" | "media"'.
+components/tasks/attach-activity-modal.tsx(83,23): error TS2339: Property 'linkActivitiesToTask' does not exist on type '{ getCompanyAuthName: () => string | null; companyAuthenticate: (companyName: string, companyPassword: string) => Promise<{ message: string; }>; userAuthenticate: (username: string, password: string, companyName: string) => Promise<...>; ... 73 more ...; exportSummaryReport: (startDate: string, endDate: string) => P...'.
+components/ui/chart.tsx(110,3): error TS2339: Property 'payload' does not exist on type 'Omit<Props<ValueType, NameType>, PropertiesReadFromContext> & { active?: boolean | undefined; includeHidden?: boolean | undefined; ... 17 more ...; axisId?: AxisId | undefined; } & ClassAttributes<...> & HTMLAttributes<...> & { ...; }'.
+components/ui/chart.tsx(115,3): error TS2339: Property 'label' does not exist on type 'Omit<Props<ValueType, NameType>, PropertiesReadFromContext> & { active?: boolean | undefined; includeHidden?: boolean | undefined; ... 17 more ...; axisId?: AxisId | undefined; } & ClassAttributes<...> & HTMLAttributes<...> & { ...; }'.
+components/ui/chart.tsx(183,23): error TS7006: Parameter 'item' implicitly has an 'any' type.
+components/ui/chart.tsx(183,29): error TS7006: Parameter 'index' implicitly has an 'any' type.
+components/ui/chart.tsx(261,39): error TS2344: Type '"payload" | "verticalAlign"' does not satisfy the constraint '"string" | "filter" | "fill" | "values" | "style" | "clipPath" | "mask" | "path" | "key" | "type" | "suppressHydrationWarning" | "className" | "id" | "lang" | "tabIndex" | "role" | ... 430 more ... | "onBBoxUpdate"'.
+  Type '"payload"' is not assignable to type '"string" | "filter" | "fill" | "values" | "style" | "clipPath" | "mask" | "path" | "key" | "type" | "suppressHydrationWarning" | "className" | "id" | "lang" | "tabIndex" | "role" | ... 430 more ... | "onBBoxUpdate"'.
+components/ui/chart.tsx(267,17): error TS2339: Property 'length' does not exist on type '{}'.
+components/ui/chart.tsx(279,16): error TS2339: Property 'map' does not exist on type '{}'.
+components/ui/chart.tsx(279,21): error TS7006: Parameter 'item' implicitly has an 'any' type.
+components/ui/user-availability-calendar.tsx(181,36): error TS7006: Parameter 'event' implicitly has an 'any' type.
+components/users/create-user-modal.tsx(98,9): error TS2353: Object literal may only specify known properties, and 'password' does not exist in type 'Partial<ApiUser>'.
