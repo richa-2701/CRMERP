@@ -62,16 +62,34 @@ export function MarkAsDoneModal({
 
     const durationMinutes = parseInt(duration, 10);
     if (isNaN(durationMinutes) || durationMinutes <= 0) {
-        toast({ title: "Invalid Duration", description: "Please enter a valid, positive number for the duration.", variant: "destructive" });
-        return;
+      toast({ title: "Invalid Duration", description: "Please enter a valid, positive number for the duration.", variant: "destructive" });
+      return;
     }
 
     setIsLoading(true);
     try {
-      // --- START OF CHANGE: Pass durationMinutes to the API call ---
-      await api.completeAndLogReminder(activity.id, notes, currentUser.username, durationMinutes);
-      // --- END OF CHANGE ---
-      
+      // Ensure IDs are safe integers
+      const reminderId = typeof activity.id === 'string' ? parseInt(activity.id, 10) : activity.id;
+      const leadId = activity.lead_id ? (typeof activity.lead_id === 'string' ? parseInt(activity.lead_id, 10) : activity.lead_id) : 0;
+
+      // WORKAROUND: The backend endpoint `Reminders/CompleteAndLog` has a bug (InvalidCastException).
+      // We are splitting this into two calls: 
+      // 1. Mark the reminder as "Completed"
+      // 2. Manually log the activity
+
+      await api.markReminderDone(reminderId);
+
+      if (leadId > 0) {
+        await api.logActivity({
+          lead_id: leadId,
+          details: `${notes}\n\n[RID:${reminderId}]`, // Metadata to link back to reminder
+          phase: "Activity Completed",
+          activity_type: activity.activity_type || "Completed Task",
+          created_by: currentUser.username,
+          duration_minutes: durationMinutes
+        });
+      }
+
       toast({
         title: "Success!",
         description: "The activity has been marked as complete and logged.",
@@ -92,7 +110,7 @@ export function MarkAsDoneModal({
   if (!isOpen || !activity) {
     return null;
   }
-  
+
   const companyName = (activity as any).company_name || "the lead";
 
   return (
@@ -115,18 +133,18 @@ export function MarkAsDoneModal({
               {activity.message}
             </div>
           </div>
-          
+
           {/* --- START OF CHANGE: Add duration input field --- */}
           <div className="space-y-2">
             <Label htmlFor="duration_minutes">Time Taken (minutes) *</Label>
-            <Input 
-                id="duration_minutes"
-                type="number"
-                value={duration}
-                onChange={(e) => setDuration(e.target.value)}
-                placeholder="e.g., 15"
-                required
-                min="1"
+            <Input
+              id="duration_minutes"
+              type="number"
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
+              placeholder="e.g., 15"
+              required
+              min="1"
             />
           </div>
           {/* --- END OF CHANGE --- */}

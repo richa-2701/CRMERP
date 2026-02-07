@@ -53,6 +53,11 @@ export interface UnifiedActivity {
     isActionable: boolean;
     raw_activity: ApiActivity | ApiReminder | ApiMeeting | ApiDemo;
     duration_minutes?: number;
+    // Merged fields for completed scheduled activities
+    original_scheduled_date?: string;
+    original_created_at?: string;
+    original_created_by?: string;
+    original_details?: string;
 }
 
 function EditActivityModal({
@@ -334,7 +339,85 @@ export default function ActivityPage() {
                 };
             });
 
-            setAllActivities(mappedData);
+            // --- DEDUPLICATION & MERGE LOGIC START ---
+            // Goal: Merge "Activity Logs" with their original "Reminders" to show a single unified entry.
+
+            // Helper to extract numeric ID from the "reminder-123" string or raw object
+            const getNumericId = (item: UnifiedActivity): number | null => {
+                if (typeof item.id === 'number') return item.id;
+                if (typeof item.id === 'string' && item.id.startsWith('reminder-')) {
+                    const parts = item.id.split('-');
+                    return parseInt(parts[1], 10);
+                }
+                // Fallback: try raw_activity if accessible, or numericId property if we kept it
+                return (item.raw_activity as any)?.id || null;
+            };
+
+            // 1. Index all Reminders by Numeric ID for easy lookup
+            const reminderMap = new Map<number, UnifiedActivity>();
+            mappedData.forEach(item => {
+                if (item.type === 'reminder') {
+                    const rid = getNumericId(item);
+                    if (rid !== null) {
+                        reminderMap.set(rid, item);
+                    }
+                }
+            });
+
+            // 2. Index which Reminders have been completed by a Log
+            const completedReminderIds = new Set<number>();
+            mappedData.forEach(item => {
+                if (item.type === 'log' && item.details && item.details.includes('[RID:')) {
+                    const match = item.details.match(/\[RID:(\d+)\]/);
+                    if (match && match[1]) {
+                        completedReminderIds.add(parseInt(match[1], 10));
+                    }
+                }
+            });
+            console.log("Found Completed Reminder IDs:", Array.from(completedReminderIds));
+
+            // 3. Filter and Enrich
+            const mergedData = mappedData.filter(item => {
+                // If this is a Reminder and it has been completed, HIDE it.
+                if (item.type === 'reminder') {
+                    const rid = getNumericId(item);
+                    if (rid !== null && completedReminderIds.has(rid)) {
+                        return false;
+                    }
+                }
+                return true;
+            }).map(item => {
+                // If this is a Log linked to a Reminder, ENRICH it with Reminder data
+                if (item.type === 'log' && item.details && item.details.includes('[RID:')) {
+                    const match = item.details.match(/\[RID:(\d+)\]/);
+                    if (match && match[1]) {
+                        const rid = parseInt(match[1], 10);
+                        const originalReminder = reminderMap.get(rid);
+
+                        // Clean the tag from details
+                        const cleanedDetails = item.details.replace(/\n\n\[RID:\d+\]/, '').replace(/\[RID:\d+\]/, '').trim();
+
+                        if (originalReminder) {
+                            return {
+                                ...item,
+                                details: cleanedDetails,
+                                original_scheduled_date: originalReminder.date,
+                                original_created_at: originalReminder.creation_date,
+                                original_created_by: (originalReminder.raw_activity as any).created_by || (originalReminder.raw_activity as any).assigned_to,
+                                original_details: originalReminder.details
+                            };
+                        } else {
+                            return { ...item, details: cleanedDetails };
+                        }
+                    }
+                }
+                return item;
+            });
+            // --- DEDUPLICATION & MERGE LOGIC END ---
+
+            console.log("Mapped Activities with Duration:", mergedData.filter(a => a.duration_minutes && a.duration_minutes > 0).length);
+
+            setAllActivities(mergedData);
             setTotalCount(response.total);
         } catch (error) {
             console.error("Failed to load activities:", error);

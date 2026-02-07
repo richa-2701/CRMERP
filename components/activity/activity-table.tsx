@@ -97,7 +97,7 @@ export function ActivityTable({ activities, onMarkAsDone, onViewDetails, onViewP
                             </TableCell>
                             {/* --- START OF CHANGE: Add Time Taken cell content --- */}
                             <TableCell>
-                                {activity.type === 'log' && activity.duration_minutes && activity.duration_minutes > 0 ? (
+                                {activity.duration_minutes && activity.duration_minutes > 0 ? (
                                     <div className="flex items-center gap-2 text-sm">
                                         <Timer className="h-4 w-4 text-muted-foreground" />
                                         <span>{activity.duration_minutes} min</span>

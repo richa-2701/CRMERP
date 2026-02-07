@@ -109,7 +109,6 @@ export function ActivityDetailModal({ activity, isOpen, onClose }: ActivityDetai
                 </DialogHeader>
                 {/* --- START OF FIX: Removed max-h and overflow classes from the main grid container --- */}
                 <div className="grid grid-cols-[120px_1fr] gap-y-4 py-4 text-sm pr-4">
-                    {/* --- END OF FIX --- */}
                     <span className="font-semibold text-right pr-4">Status</span>
                     <Badge variant={activity.status.toLowerCase() === 'pending' || activity.status.toLowerCase() === 'scheduled' ? 'secondary' : 'default'} className="capitalize w-fit">
                         {activity.status.replace(/_/g, ' ')}
@@ -118,44 +117,94 @@ export function ActivityDetailModal({ activity, isOpen, onClose }: ActivityDetai
                     <span className="font-semibold text-right pr-4">Activity Type</span>
                     <span>{activity.activity_type}</span>
 
-                    <span className="font-semibold text-right pr-4">
-                        {isScheduled ? "Scheduled For" : "Logged On"}
-                    </span>
-                    <span>{formatDateTime(activity.date)}</span>
-
-                    {isScheduled && activity.raw_activity.created_at && (
+                    {/* --- START OF CHANGE: Handle Merged (Completed Scheduled Activity) View --- */}
+                    {activity.original_scheduled_date ? (
                         <>
-                            <span className="font-semibold text-right pr-4">Created On</span>
-                            <span>{formatDateTime(activity.raw_activity.created_at)}</span>
+                            <span className="font-semibold text-right pr-4">Scheduled For</span>
+                            <span>{formatDateTime(activity.original_scheduled_date)}</span>
+
+                            {activity.original_created_at && (
+                                <>
+                                    <span className="font-semibold text-right pr-4">Created On</span>
+                                    <span>{formatDateTime(activity.original_created_at)}</span>
+                                </>
+                            )}
+
+                            {activity.original_created_by && (
+                                <>
+                                    <span className="font-semibold text-right pr-4">Created By</span>
+                                    <span>{activity.original_created_by}</span>
+                                </>
+                            )}
+
+                            <span className="font-semibold text-right pr-4">Completed On</span>
+                            <span>{formatDateTime(activity.date)}</span>
+
+                            {activity.type === 'log' && activity.duration_minutes && activity.duration_minutes > 0 && (
+                                <>
+                                    <span className="font-semibold text-right pr-4 flex items-center justify-end gap-2">
+                                        <Timer className="h-4 w-4 text-muted-foreground" />
+                                        Time Taken
+                                    </span>
+                                    <span>{activity.duration_minutes} minutes</span>
+                                </>
+                            )}
+
+                            <span className="font-semibold text-right pr-4 self-start">Details</span>
+                            <div className="bg-muted/50 p-2 rounded-md col-span-1 max-h-32 overflow-y-auto">
+                                <p className="whitespace-pre-wrap break-words text-muted-foreground">
+                                    {activity.original_details || "No details provided."}
+                                </p>
+                            </div>
+
+                            <span className="font-semibold text-right pr-4 self-start">Outcome</span>
+                            <div className="bg-green-50 dark:bg-green-900/20 p-2 rounded-md col-span-1 max-h-48 overflow-y-auto border border-green-100 dark:border-green-800">
+                                <p className="whitespace-pre-wrap break-words">
+                                    {activity.details}
+                                </p>
+                            </div>
                         </>
-                    )}
-
-                    {/** Added Created By Field for ALL types **/}
-                    {((activity.raw_activity as any).created_by || (activity.raw_activity as any).scheduled_by) && (
+                    ) : (
+                        /* --- Standard View for Single Activities --- */
                         <>
-                            <span className="font-semibold text-right pr-4">Created By</span>
-                            <span>{(activity.raw_activity as any).created_by || (activity.raw_activity as any).scheduled_by}</span>
-                        </>
-                    )}
-
-                    {activity.type === 'log' && activity.duration_minutes && activity.duration_minutes > 0 && (
-                        <>
-                            <span className="font-semibold text-right pr-4 flex items-center justify-end gap-2">
-                                <Timer className="h-4 w-4 text-muted-foreground" />
-                                Time Taken
+                            <span className="font-semibold text-right pr-4">
+                                {isScheduled ? "Scheduled For" : "Logged On"}
                             </span>
-                            <span>{activity.duration_minutes} minutes</span>
+                            <span>{formatDateTime(activity.date)}</span>
+
+                            {isScheduled && activity.raw_activity.created_at && (
+                                <>
+                                    <span className="font-semibold text-right pr-4">Created On</span>
+                                    <span>{formatDateTime(activity.raw_activity.created_at)}</span>
+                                </>
+                            )}
+
+                            {((activity.raw_activity as any).created_by || (activity.raw_activity as any).scheduled_by) && (
+                                <>
+                                    <span className="font-semibold text-right pr-4">Created By</span>
+                                    <span>{(activity.raw_activity as any).created_by || (activity.raw_activity as any).scheduled_by}</span>
+                                </>
+                            )}
+
+                            {activity.type === 'log' && activity.duration_minutes && activity.duration_minutes > 0 && (
+                                <>
+                                    <span className="font-semibold text-right pr-4 flex items-center justify-end gap-2">
+                                        <Timer className="h-4 w-4 text-muted-foreground" />
+                                        Time Taken
+                                    </span>
+                                    <span>{activity.duration_minutes} minutes</span>
+                                </>
+                            )}
+
+                            <span className="font-semibold text-right pr-4 self-start">Details</span>
+                            <div className="bg-muted/50 p-2 rounded-md col-span-1 max-h-48 overflow-y-auto">
+                                <p className="whitespace-pre-wrap break-words">
+                                    {activity.details}
+                                </p>
+                            </div>
                         </>
                     )}
-
-                    <span className="font-semibold text-right pr-4 self-start">Details</span>
-                    {/* --- START OF FIX: Wrapped the details <p> in a scrollable div --- */}
-                    <div className="bg-muted/50 p-2 rounded-md col-span-1 max-h-48 overflow-y-auto">
-                        <p className="whitespace-pre-wrap break-words">
-                            {activity.details}
-                        </p>
-                    </div>
-                    {/* --- END OF FIX --- */}
+                    {/* --- END OF CHANGE --- */}
 
                     {isLoadingDetails && (
                         <div className="col-span-2 flex items-center justify-center py-4">

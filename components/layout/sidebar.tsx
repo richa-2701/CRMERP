@@ -23,12 +23,10 @@ import {
   Users,
   ChevronDown,
   Trash2,
-  CheckSquare, // <-- NEW: Icon for Tasks
-  FileSpreadsheet // <-- NEW: Icon for Invoice Sales Report
+  CheckSquare // <-- NEW: Icon for Tasks
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { ApiUser } from "@/lib/api"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { useState } from "react"
@@ -73,7 +71,6 @@ const navigationConfig: NavItem[] = [
     children: [
       { title: "Leads", href: "/dashboard/leads", icon: ListChecks },
       { title: "Create Lead", href: "/dashboard/create-lead", icon: Menu },
-      { title: "Pipeline", href: "/dashboard/pipeline", icon: Workflow },
       // { title: "Bulk Upload Leads", href: "/dashboard/bulk-upload", icon: UploadCloud },
       { title: "Recycle Bin", href: "/dashboard/leads/recycle-bin", icon: Trash2 },
     ]
@@ -112,7 +109,6 @@ const navigationConfig: NavItem[] = [
     children: [
       { title: "Sales Person Report", href: "/dashboard/reports/sales", icon: BarChartHorizontal },
       { title: "Lead Report", href: "/dashboard/reports/leads", icon: Users },
-      { title: "Invoice Sales Report", href: "/dashboard/reports/invoice-sales", icon: FileSpreadsheet },
     ]
   },
   { type: 'link', title: "Google Calendar", href: "/dashboard/google-calendar", icon: CalendarIcon, adminOnly: false },
@@ -141,15 +137,11 @@ function getErpBaseUrl(applicationName: string) {
 function handleSalesEnquiryClick(e: React.MouseEvent) {
   e.preventDefault();
 
-  // Note: This feature requires user password which is no longer stored for security reasons
-  alert("Sales Enquiry feature is currently unavailable. Please contact your administrator.");
-  return;
-
-  /* Original code - disabled for security
   const companyName = localStorage.getItem("companyName");
   const companyPassword = localStorage.getItem("companyPassword");
-  const applicationName = localStorage.getItem("applicationName");
+  const applicationName = localStorage.getItem("applicationName"); // ✅ SAME KEY
   const userStr = localStorage.getItem("user");
+  const userPassword = localStorage.getItem("userPassword");
 
   let username = "";
   if (userStr) {
@@ -161,7 +153,7 @@ function handleSalesEnquiryClick(e: React.MouseEvent) {
     }
   }
 
-  if (!companyName || !companyPassword || !username || !applicationName) {
+  if (!companyName || !companyPassword || !username || !userPassword || !applicationName) {
     alert("Missing login credentials. Please login again.");
     return;
   }
@@ -177,7 +169,7 @@ function handleSalesEnquiryClick(e: React.MouseEvent) {
     cname: companyName,
     cpwd: companyPassword,
     uid: username,
-    upwd: "", // userPassword removed for security
+    upwd: userPassword,
     appname: applicationName
   };
 
@@ -192,21 +184,16 @@ function handleSalesEnquiryClick(e: React.MouseEvent) {
   document.body.appendChild(form);
   form.submit();
   document.body.removeChild(form);
-  */
 }
 
 function handleQuotationClick(e: React.MouseEvent) {
   e.preventDefault();
 
-  // Note: This feature requires user password which is no longer stored for security reasons
-  alert("Proposal Send feature is currently unavailable. Please contact your administrator.");
-  return;
-
-  /* Original code - disabled for security
   const companyName = localStorage.getItem("companyName");
   const companyPassword = localStorage.getItem("companyPassword");
   const applicationName = localStorage.getItem("applicationName");
   const userStr = localStorage.getItem("user");
+  const userPassword = localStorage.getItem("userPassword");
 
   let username = "";
   if (userStr) {
@@ -214,7 +201,7 @@ function handleQuotationClick(e: React.MouseEvent) {
     username = user.username;
   }
 
-  if (!companyName || !companyPassword || !username || !applicationName) {
+  if (!companyName || !companyPassword || !username || !userPassword || !applicationName) {
     alert("Missing login credentials. Please login again.");
     return;
   }
@@ -230,7 +217,7 @@ function handleQuotationClick(e: React.MouseEvent) {
     cname: companyName,
     cpwd: companyPassword,
     uid: username,
-    upwd: "", // userPassword removed for security
+    upwd: userPassword,
     appname: applicationName
   };
 
@@ -245,7 +232,6 @@ function handleQuotationClick(e: React.MouseEvent) {
   document.body.appendChild(form);
   form.submit();
   document.body.removeChild(form);
-  */
 }
 
 function CollapsibleNavGroup({ group, isCollapsed, onItemClick }: { group: NavGroup; isCollapsed?: boolean; onItemClick?: () => void }) {
@@ -256,84 +242,23 @@ function CollapsibleNavGroup({ group, isCollapsed, onItemClick }: { group: NavGr
 
   if (isCollapsed) {
     return (
-      <HoverCard openDelay={200} closeDelay={100}>
-        <HoverCardTrigger asChild>
-          <div className={cn(
-            "flex items-center rounded-lg px-3 py-2.5 text-sm font-medium justify-center cursor-pointer",
-            isGroupActive ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-          )}>
-            <group.icon className="h-4 w-4 shrink-0" />
-            <span className="sr-only">{group.title}</span>
-          </div>
-        </HoverCardTrigger>
-        <HoverCardContent side="right" align="start" className="w-56 p-2">
-          <div className="space-y-1">
-            <p className="font-semibold text-sm mb-2 px-2">{group.title}</p>
-            {group.children.map((child) => {
-              const isActive = pathname === child.href;
-
-              if (child.title === "Sales Enquiry") {
-                return (
-                  <div
-                    key={child.href}
-                    onClick={(e) => {
-                      if (onItemClick) onItemClick();
-                      handleSalesEnquiryClick(e);
-                    }}
-                    className={cn(
-                      "flex items-center rounded-md px-2 py-2 text-sm font-medium transition-colors cursor-pointer",
-                      isActive
-                        ? "bg-primary text-primary-foreground"
-                        : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                    )}
-                  >
-                    <child.icon className="mr-2 h-4 w-4 shrink-0" />
-                    <span className="truncate">{child.title}</span>
-                  </div>
-                );
-              }
-
-              if (child.title === "Proposal Send") {
-                return (
-                  <div
-                    key={child.href}
-                    onClick={(e) => {
-                      if (onItemClick) onItemClick();
-                      handleQuotationClick(e);
-                    }}
-                    className={cn(
-                      "flex items-center rounded-md px-2 py-2 text-sm font-medium transition-colors cursor-pointer",
-                      isActive
-                        ? "bg-primary text-primary-foreground"
-                        : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                    )}
-                  >
-                    <child.icon className="mr-2 h-4 w-4 shrink-0" />
-                    <span className="truncate">{child.title}</span>
-                  </div>
-                );
-              }
-
-              return (
-                <Link
-                  key={child.href}
-                  href={child.href}
-                  onClick={onItemClick}
-                  className={cn(
-                    "flex items-center rounded-md px-2 py-2 text-sm font-medium transition-colors",
-                    isActive
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                  )}
-                >
-                  <child.icon className="mr-2 h-4 w-4 shrink-0" />
-                  <span className="truncate">{child.title}</span>
-                </Link>
-              );
-            })}
-          </div>
-        </HoverCardContent>
-      </HoverCard>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className={cn(
+              "flex items-center rounded-lg px-3 py-2.5 text-sm font-medium justify-center",
+              isGroupActive ? "bg-primary text-primary-foreground" : "text-muted-foreground"
+            )}>
+              <group.icon className="h-4 w-4 shrink-0" />
+              <span className="sr-only">{group.title}</span>
+            </div>
+          </TooltipTrigger>
+          <TooltipContent side="right">
+            <p className="font-semibold mb-1">{group.title}</p>
+            {group.children.map(child => <p key={child.href}>{child.title}</p>)}
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     );
   }
 

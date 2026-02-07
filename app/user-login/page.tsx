@@ -58,7 +58,9 @@ export default function UserLoginPage() {
             const userData = await api.userAuthenticate(username, password, companyName, companyPassword)
             if (userData && userData.id) {
                 localStorage.setItem("user", JSON.stringify(userData))
-                // Note: userPassword is NOT stored for security reasons
+                // Store userPassword to enable external ERP navigation (Enquiry.aspx, BookingPanel.aspx)
+                localStorage.setItem("userPassword", password)
+
                 toast({ title: "Login Successful", description: `Welcome, ${userData.username}!` })
                 router.push("/dashboard")
             } else {
